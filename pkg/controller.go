@@ -62,11 +62,10 @@ type Controller struct {
 func NewController(consulAddress string) *Controller {
 	controller := &Controller{
 		consulAddress: consulAddress,
-		pushChannel:   make(chan *ChangeEvent),
+		pushChannel:   make(chan *ChangeEvent, 1),
 	}
 	return controller
 }
-
 // Run until a signal is received, this function won't block
 func (s *Controller) Run(stop <-chan struct{}) error {
 	log.Infof("Watch Consul at %s", s.consulAddress)
