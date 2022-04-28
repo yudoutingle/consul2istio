@@ -19,6 +19,7 @@ package pkg
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"istio.io/client-go/pkg/apis/networking/v1alpha3"
@@ -189,6 +190,11 @@ func (s *Controller) pushConsulService2APIServer() error {
 	}
 
 	for _, newServiceEntry := range newServiceEntries {
+		bak := newServiceEntry.Hosts
+		newServiceEntry.Hosts = []string{}
+		for _, host := range bak {
+			newServiceEntry.Hosts = append(newServiceEntry.Hosts, strings.ReplaceAll(host, "_", "-"))
+		}
 		_, err = ic.NetworkingV1alpha3().ServiceEntries(configRootNS).Create(context.TODO(), toServiceEntryCRD(newServiceEntry, nil),
 			v1.CreateOptions{FieldManager: aerakiFieldManager})
 		log.Infof("Creating ServiceEntry: %v", *newServiceEntry)
