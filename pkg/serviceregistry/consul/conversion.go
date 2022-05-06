@@ -127,7 +127,8 @@ func convertPort(port int, name string) *istio.Port {
 func serviceHostname(name string) string {
 	// TODO include datacenter in Hostname?
 	// consul DNS uses "redis.service.us-east-1.consul" -> "[<optional_tag>].<svc>.service.[<optional_datacenter>].consul"
-	return fmt.Sprintf("%s.service.consul", name)
+	//return fmt.Sprintf("%s.service.consul", name)
+	return fmt.Sprintf("%s", name)
 }
 
 func convertProtocol(name string) string {
